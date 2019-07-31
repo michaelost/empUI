@@ -5,12 +5,11 @@ class CreateUser extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: null,
       name: '',
-      title: '',
-
+      title: ''
     }
     this.handleChange = this.handleChange.bind(this);
+    this.addUserClicked = this.addUserClicked.bind(this);
   }
 
   handleChange(prop, value) {
@@ -19,18 +18,15 @@ class CreateUser extends React.Component {
     this.setState({ ...newUser });
   }
 
-  validate(users) {
-    const { name, title } = this.state;
-    if (!name || !title) {
-      this.setState({ error: 'missing input' });
-    }
+  addUserClicked() {
+    this.props.addUser(this.state);
+    this.resetForm();
   }
 
   resetForm() {
     this.setState({
       name: '',
-      title: '',
-      error: null
+      title: ''
     });
   }
 
@@ -58,11 +54,7 @@ class CreateUser extends React.Component {
             <div className="style-error">{this.state.error}</div>
           <button
             disabled={this.state.error}
-            onClick={() => {
-              this.props.addUser(this.state);
-              this.resetForm();
-              }
-            }
+            onClick={this.addUserClicked}
           >
             Add user
           </button>

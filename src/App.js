@@ -14,6 +14,7 @@ class App extends React.Component {
 
   state = {
     users: [],
+    token: null
   }
 
 
@@ -31,12 +32,19 @@ class App extends React.Component {
       })
   }
 
+  checkResponse(response) {
+    if (response.result ===  'unauthorized') {
+      throw new Error('403 - unauthorized');
+    }
+  }
+
   removeUser(_id) {
     const url = `${config.EMPLOYEE_SERVER_URL}/users/${_id}`;
     console.log('url', url)
     fetch(`${config.EMPLOYEE_SERVER_URL}/users/${_id}`, { method: 'DELETE' })
       .then(response => response.json())
       .then(response => {
+        this.checkResponse(response)
         this.setState({
           users: this.state.users.filter(user => user._id !== _id)
         })
@@ -54,6 +62,7 @@ class App extends React.Component {
     fetch(`${config.EMPLOYEE_SERVER_URL}/users`, { method: 'POST' })
       .then(response => response.json())
       .then(response => {
+        this.checkResponse(response)
         this.setState({
           users: this.state.users.concat([ user ])
         })
@@ -69,6 +78,11 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
+        {!this.state.token &&
+          <div className="no token">
+            <p> Currently you dont have access token, so you can see that adding and removing user and doesn't work</p>
+          </div>
+        }
       <CreateUser addUser={this.addUser} />
       <UserList removeUser={this.removeUser} users={this.state.users}  />
       </div>
