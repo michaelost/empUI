@@ -4,8 +4,8 @@ export default class User extends React.Component {
   render() {
     return (
       <div className="user_block">
-        <h1 className="name">{this.props.data.name}</h1>
-        <span className="title">{this.props.data.title}</span>
+        <span className="name"><b>name:</b> {this.props.data.name}</span>&nbsp;
+        <span className="title"><b>title: </b> {this.props.data.title}</span>&nbsp;
         <button onClick={() => { this.props.removeUser(this.props.data._id) }}>Remove Employee</button>
       </div>
     )

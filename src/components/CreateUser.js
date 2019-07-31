@@ -51,7 +51,6 @@ class CreateUser extends React.Component {
                 onChange={(e) => {this.handleChange('title', e.target.value)}}
               />
             </label>
-            <div className="style-error">{this.state.error}</div>
           <button
             disabled={this.state.error}
             onClick={this.addUserClicked}

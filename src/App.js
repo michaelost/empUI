@@ -5,6 +5,13 @@ import config from './config'
 import UserList from './components/UserList';
 import CreateUser from './components/CreateUser';
 
+const formatRequest = (data) => ({
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(data)
+})
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -41,13 +48,7 @@ class App extends React.Component {
   getAccessToken() {
     fetch(`${config.AUTH_SERVER_URL}/login`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: 'mi',
-        password: '123',
-      })
+      ...formatRequest({ username: 'mi', password: '123' })
     })
       .then(response => response.json())
       .then(response => {
@@ -61,12 +62,7 @@ class App extends React.Component {
   removeUser(_id) {
     fetch(`${config.EMPLOYEE_SERVER_URL}/users/${_id}`, {
       method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        token: this.state.token,
-      })
+      ...formatRequest({ token: this.state.token })
     })
       .then(response => response.json())
       .then(response => {
@@ -87,10 +83,7 @@ class App extends React.Component {
   addUser(user) {
     fetch(`${config.EMPLOYEE_SERVER_URL}/users`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+      ...formatRequest({
         ...user,
         token: this.state.token,
       })
