@@ -36,21 +36,21 @@ class CreateUser extends React.Component {
         <div className="form-create-user">
           <h2>Add user</h2>
             <label>
-              Name
+              Name &nbsp;
               <input type="text"
                 name="name"
                 value={this.state.name}
                 onChange={(e) => {this.handleChange('name', e.target.value)}}
               />
-            </label>
+            </label>&nbsp;
             <label>
-              Title 
+              Title &nbsp;
               <input type="text"
                 name="title"
                 value={this.state.title}
                 onChange={(e) => {this.handleChange('title', e.target.value)}}
               />
-            </label>
+            </label>&nbsp;
           <button
             disabled={this.state.error}
             onClick={this.addUserClicked}
