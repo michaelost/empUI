@@ -3,16 +3,19 @@ import logo from './logo.svg';
 import './App.css';
 import config from './config'
 import UserList from './components/UserList';
+import CreateUser from './components/CreateUser';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.removeUser = this.removeUser.bind(this);
+    this.addUser = this.addUser.bind(this);
   }
 
   state = {
     users: [],
   }
+
 
   componentDidMount() {
     console.log('config', config);
@@ -47,9 +50,26 @@ class App extends React.Component {
 
   }
 
+  addUser(user) {
+    fetch(`${config.EMPLOYEE_SERVER_URL}/users`, { method: 'POST' })
+      .then(response => response.json())
+      .then(response => {
+        this.setState({
+          users: this.state.users.concat([ user ])
+        })
+      })
+      .catch(error => {
+        alert(error.message);
+        this.setState({
+          error,
+        });
+      })
+  }
+
   render() {
     return (
       <div className="App">
+      <CreateUser addUser={this.addUser} />
       <UserList removeUser={this.removeUser} users={this.state.users}  />
       </div>
     );
