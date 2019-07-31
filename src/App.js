@@ -79,7 +79,16 @@ class App extends React.Component {
   }
 
   addUser(user) {
-    fetch(`${config.EMPLOYEE_SERVER_URL}/users`, { method: 'POST' })
+    fetch(`${config.EMPLOYEE_SERVER_URL}/users`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...user,
+        token: this.state.token,
+      })
+    })
       .then(response => response.json())
       .then(response => {
         this.checkResponse(response)
