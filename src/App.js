@@ -10,6 +10,7 @@ class App extends React.Component {
     super(props);
     this.removeUser = this.removeUser.bind(this);
     this.addUser = this.addUser.bind(this);
+    this.getAccessToken = this.getAccessToken.bind(this);
   }
 
   state = {
@@ -17,9 +18,7 @@ class App extends React.Component {
     token: null
   }
 
-
   componentDidMount() {
-    console.log('config', config);
     fetch(`${config.EMPLOYEE_SERVER_URL}/users`)
       .then(response => response.json())
       .then(response => {
@@ -38,10 +37,31 @@ class App extends React.Component {
     }
   }
 
+
+  getAccessToken() {
+    fetch(`${config.AUTH_SERVER_URL}/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: 'mi',
+        password: '123',
+      })
+    })
+      .then(response => response.json())
+      .then(response => {
+        this.setState({ token: response.user.token });
+      })
+      .catch(err => {
+        alert(err.message);
+      })
+  }
+
   removeUser(_id) {
-    const url = `${config.EMPLOYEE_SERVER_URL}/users/${_id}`;
-    console.log('url', url)
-    fetch(`${config.EMPLOYEE_SERVER_URL}/users/${_id}`, { method: 'DELETE' })
+    fetch(`${config.EMPLOYEE_SERVER_URL}/users/${_id}`, {
+      method: 'DELETE',
+    })
       .then(response => response.json())
       .then(response => {
         this.checkResponse(response)
@@ -81,6 +101,11 @@ class App extends React.Component {
         {!this.state.token &&
           <div className="no token">
             <p> Currently you dont have access token, so you can see that adding and removing user and doesn't work</p>
+            <p> to get your access token please press button </p>
+            <p> after that you can remove/add users </p>
+            <button onClick={this.getAccessToken}>
+              get access token
+            </button>
           </div>
         }
       <CreateUser addUser={this.addUser} />
