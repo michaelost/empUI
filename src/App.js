@@ -61,6 +61,12 @@ class App extends React.Component {
   removeUser(_id) {
     fetch(`${config.EMPLOYEE_SERVER_URL}/users/${_id}`, {
       method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        token: this.state.token,
+      })
     })
       .then(response => response.json())
       .then(response => {
